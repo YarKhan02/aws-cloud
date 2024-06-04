@@ -8,16 +8,16 @@ services:
       BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
     ports:
       - "4567:4567"
-    volumes:
-      - ./backend-flask:/backend-flask
+    # volumes:
+    #   - ./backend-flask:/backend-flask
   frontend-react-js:
     build: ./frontend-react-js
     environment:
       REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend-react-js:/frontend-react-js
+    # volumes:
+    #   - ./frontend-react-js:/frontend-react-js
 networks:
   internal-network:
     driver: bridge
