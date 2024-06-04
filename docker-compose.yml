@@ -10,7 +10,6 @@ services:
       - "4567:4567"
     volumes:
       - ./backend-flask:/backend-flask
-    command: flask run --host=0.0.0.0 --port=4567
   frontend-react-js:
     build: ./frontend-react-js
     environment:
@@ -19,7 +18,6 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend-react-js:/frontend-react-js
-    command: npm start
 networks:
   internal-network:
     driver: bridge
