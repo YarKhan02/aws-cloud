@@ -4,6 +4,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/aws-cli:1": {}
 	},
+
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -11,6 +12,10 @@
 				"ms-python.python"
 			]
 		}
+	},
+
+	"remoteEnv": {
+		"AWS_CLI_AUTO_PROMPT": "on-partial"
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
