@@ -16,6 +16,20 @@
 
 	"remoteEnv": {
 		"AWS_CLI_AUTO_PROMPT": "on-partial"
+	},
+
+	"forwardPorts": [3000, 4567],
+	"portsAttributes": {
+		"3000": {
+		"label": "Frontend",
+		"onAutoForward": "notify",
+		"visibility": "Public"
+		},
+		"4567": {
+		"label": "Backend",
+		"onAutoForward": "notify",
+		"visibility": "Public"
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
