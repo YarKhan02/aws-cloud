@@ -4,11 +4,11 @@ services:
     environment:
       FRONTEND_URL: "https://${CODESPACE_NAME}-3000.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
       BACKEND_URL: "https://${CODESPACE_NAME}-4567.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
-      OTEL_SERVICE_NAME: 'backend-flask'
-      OTEL_EXPORTER_OTLP_PROTOCOL: 'http/protobuf'
-      OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
-      OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
-      ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
+      # OTEL_SERVICE_NAME: 'backend-flask'
+      # OTEL_EXPORTER_OTLP_PROTOCOL: 'http/protobuf'
+      # OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+      # OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+      # ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
     build: ./backend-flask
     ports:
       - "4567:4567"
@@ -28,29 +28,29 @@ services:
     # volumes:
     #   - ./frontend-react-js:/frontend-react-js
   
-  dynamodb-local:
-    # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
-    # We needed to add user:root to get this working.
-    user: root
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-    image: "amazon/dynamodb-local:latest"
-    container_name: dynamodb-local
-    ports:
-      - "8000:8000"
-    volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
+  # dynamodb-local:
+  #   # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
+  #   # We needed to add user:root to get this working.
+  #   user: root
+  #   command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+  #   image: "amazon/dynamodb-local:latest"
+  #   container_name: dynamodb-local
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - "./docker/dynamodb:/home/dynamodblocal/data"
+  #   working_dir: /home/dynamodblocal
   
-  db:
-    image: postgres:13-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-    ports:
-      - '5432:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data
+  # db:
+  #   image: postgres:13-alpine
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   ports:
+  #     - '5432:5432'
+  #   volumes: 
+  #     - db:/var/lib/postgresql/data
 
 networks:
   internal-network:
