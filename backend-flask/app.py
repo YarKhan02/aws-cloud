@@ -4,6 +4,13 @@ from flask_cors import CORS, cross_origin # type: ignore
 import os
 # import sys
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+from lib.cognito_jwt_token import CognitoJwtToken, TokenVerifyError
+
 # Rollbar ----->
 # import rollbar
 # import rollbar.contrib.flask
@@ -45,6 +52,13 @@ app = Flask(__name__)
 # Initialize automatic instrumentation with Flask
 # FlaskInstrumentor().instrument_app(app)
 # RequestsInstrumentor().instrument()
+
+
+cognito_jwt_token = CognitoJwtToken(
+  user_pool_id = os.getenv("AWS_COGNITO_USER_POOL_ID"), 
+  user_pool_client_id = os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID"), 
+  region = os.getenv("AWS_DEFAULT_REGION")
+)
 
 
 frontend = os.getenv('FRONTEND_URL')
@@ -119,8 +133,16 @@ def data_create_message():
 
 @app.route("/api/activities/home", methods=['GET'])
 def data_home():
-  app.logger.debug(request.headers.get('Authorization'))
-  data = HomeActivities.run()
+  access_token = cognito_jwt_token.extract_access_token(request.headers)
+  try:
+    claims = cognito_jwt_token.verify(access_token)
+    app.logger.debug("Authenticated")
+    app.logger.debug(claims)
+    data = HomeActivities.run(cognito_user_id = claims['username'])
+  except TokenVerifyError as e:
+    app.logger.debug(e)
+    data = HomeActivities.run()
+  
   return data, 200
 
 @app.route("/api/activities/notifications", methods=['GET'])
