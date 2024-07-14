@@ -12,7 +12,7 @@ services:
       AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
       AWS_COGNITO_USER_POOL_ID: "ap-southeast-2_JGqHU6OxE"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "12iefjht6h8nt38ov6as3jt3ab" 
-
+      CONNECTION_URL: "${CONNECTION_URL}"
     build: ./backend-flask
     ports:
       - "4567:4567"

@@ -9,29 +9,14 @@
 		"vscode": {
 			"extensions": [
 				"ms-azuretools.vscode-docker",
-				"ms-python.python"
+				"ms-python.python",
+				"ckolkman.vscode-postgres"
 			]
 		}
 	},
 
-	"tasks": [
-		{
-			"name": "Install AWS CLI",
-			"runCommand": "curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' && unzip awscliv2.zip && sudo ./aws/install"
-		},
-		{
-			"name": "Install PostgreSQL client",
-			"runCommand": [
-				"curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg",
-				"echo 'deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list",
-				"sudo apt-get update && sudo apt-get install -y postgresql-client-13 libpq-dev"
-			]
-		}
-	],
-
 	"remoteEnv": {
-		"AWS_CLI_AUTO_PROMPT": "on-partial",
-		"CONNECTION_URL": "postgresql://postgres:password@127.0.0.1:5432/cruddur"
+		"AWS_CLI_AUTO_PROMPT": "on-partial"	
 	},
 
 	"forwardPorts": [3000, 4567],
@@ -48,23 +33,11 @@
 		}
 	}
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
 	// Uncomment the next line if you want start specific services in your Docker Compose config.
 	// "runServices": [],
 
 	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
 	// "shutdownAction": "none",
-
-	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
 
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "devcontainer"
