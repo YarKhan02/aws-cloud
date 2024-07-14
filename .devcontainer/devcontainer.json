@@ -16,8 +16,11 @@
 	},
 
 	"remoteEnv": {
-		"AWS_CLI_AUTO_PROMPT": "on-partial"	
+		"AWS_CLI_AUTO_PROMPT": "on-partial",
+		"IP_GITHUB": "$(curl ifconfig.me)"
 	},
+
+	"postCreateCommand": "$THEIA_WORKSPACE_ROOT/backend-flask/rds-update-sg-rule",
 
 	"forwardPorts": [3000, 4567],
 	"portsAttributes": {
