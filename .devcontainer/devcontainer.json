@@ -16,12 +16,11 @@
 	},
 
 	"remoteEnv": {
-		"AWS_CLI_AUTO_PROMPT": "on-partial",
-		"IP_GITHUB": "$(curl ifconfig.me)"
+		"AWS_CLI_AUTO_PROMPT": "on-partial"
 	},
 
-	"postCreateCommand": "$THEIA_WORKSPACE_ROOT/backend-flask/rds-update-sg-rule",
-
+	"postCreateCommand": "bash .devcontainer/setup.sh",
+	
 	"forwardPorts": [3000, 4567],
 	"portsAttributes": {
 		"3000": {
@@ -35,13 +34,4 @@
 		"visibility": "Public"
 		}
 	}
-
-	// Uncomment the next line if you want start specific services in your Docker Compose config.
-	// "runServices": [],
-
-	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
-	// "shutdownAction": "none",
-
-	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "devcontainer"
 }
