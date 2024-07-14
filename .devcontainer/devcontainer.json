@@ -30,7 +30,8 @@
 	],
 
 	"remoteEnv": {
-		"AWS_CLI_AUTO_PROMPT": "on-partial"
+		"AWS_CLI_AUTO_PROMPT": "on-partial",
+		"CONNECTION_URL": "postgresql://postgres:password@127.0.0.1:5432/cruddur"
 	},
 
 	"forwardPorts": [3000, 4567],
