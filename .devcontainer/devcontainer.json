@@ -10,7 +10,9 @@
 			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"ms-python.python",
-				"ckolkman.vscode-postgres"
+				"ckolkman.vscode-postgres",
+				"ms-ossdata.vscode-postgresql",
+				"cweijan.vscode-postgresql-client2"
 			]
 		}
 	},
