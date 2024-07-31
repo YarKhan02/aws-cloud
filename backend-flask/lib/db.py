@@ -1,6 +1,7 @@
 from psycopg_pool import ConnectionPool
 import os
 import sys
+import re
 
 class Db:
   def __init__(self):
@@ -10,12 +11,18 @@ class Db:
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
 
-  def query_commit(self, sql):
+  def query_commit(self, sql, params):
+    pattern = r"\bRETURNING\b"
+    is_returning_id = re.search(pattern, sql)
     try:
       conn = self.pool.connection()
       cur = conn.curson()
-      cur.execute(sql)
+      cur.execute(sql, params)
+      if is_returning_id:
+        returning_id = cur.fetchone()[0]
       conn.commit()
+      if is_returning_id:
+        return returning_id
     except Exception as err:
       self.print_sql_err(err)
       # conn.rollback()
