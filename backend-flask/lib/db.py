@@ -1,7 +1,10 @@
 from psycopg_pool import ConnectionPool
+
 import os
 import sys
 import re
+
+from flask import current_app as app
 
 class Db:
   def __init__(self):
@@ -11,18 +14,26 @@ class Db:
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
 
+  def template(self, name):
+    template_path = os.path.join(app.root_path, 'db', 'sql', name + '.sql')
+    with open(template_path, 'r') as f:
+      template_content = f.read()
+
+    return template_content
+
   def query_commit(self, sql, params):
+    print('-==================-',params)
     pattern = r"\bRETURNING\b"
     is_returning_id = re.search(pattern, sql)
     try:
-      conn = self.pool.connection()
-      cur = conn.curson()
-      cur.execute(sql, params)
-      if is_returning_id:
-        returning_id = cur.fetchone()[0]
-      conn.commit()
-      if is_returning_id:
-        return returning_id
+      with self.pool.connection() as conn:
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        if is_returning_id:
+          returning_id = cur.fetchone()[0]
+        conn.commit()
+        if is_returning_id:
+          return returning_id
     except Exception as err:
       self.print_sql_err(err)
       # conn.rollback()
@@ -73,7 +84,7 @@ class Db:
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
 
     # psycopg2 extensions.Diagnostics object attribute
-    print ("\nextensions.Diagnostics:", err.diag)
+    # print ("\nextensions.Diagnostics:", err.diag)
 
     # print the pgcode and pgerror exceptions
     print ("pgerror:", err.pgerror)

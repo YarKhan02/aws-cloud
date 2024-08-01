@@ -1,6 +1,6 @@
-from flask import Flask # type: ignore
-from flask import request # type: ignore
-from flask_cors import CORS, cross_origin # type: ignore
+from flask import Flask
+from flask import request
+from flask_cors import CORS, cross_origin
 import os
 # import sys
 
