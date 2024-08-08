@@ -21,8 +21,9 @@ class Db:
 
     return template_content
 
-  def query_commit(self, sql, params):
-    print('-==================-',params)
+  def query_commit(self, sql, params = {}):
+    app.logger.debug('-==================-\n')
+    app.logger.debug(params)
     pattern = r"\bRETURNING\b"
     is_returning_id = re.search(pattern, sql)
     try:
@@ -38,19 +39,19 @@ class Db:
       self.print_sql_err(err)
       # conn.rollback()
 
-  def query_array_json(self, sql):
+  def query_array(self, sql, params = {}):
     wrapped_sql = self.query_wrap_array(sql)
     with self.pool.connection() as conn:
         with conn.cursor() as cur:
-          cur.execute(wrapped_sql)
+          cur.execute(wrapped_sql, params)
           json = cur.fetchone()
           return json[0]
 
-  def query_object_json(self, sql):
+  def query_object(self, sql, params = {}):
     wrapped_sql = self.query_wrap_object(sql)
     with self.pool.connection() as conn:
         with conn.cursor() as cur:
-          cur.execute(wrapped_sql)
+          cur.execute(wrapped_sql, params)
           json = cur.fetchone()
           return json[0]
 

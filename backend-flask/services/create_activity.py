@@ -1,7 +1,8 @@
-import uuid
 from datetime import datetime, timedelta, timezone
 
 from lib.db import db
+
+from flask import current_app as app
 
 class CreateActivity:
   def run(message, user_handle, ttl):
@@ -45,21 +46,20 @@ class CreateActivity:
     else:
       expires_at = (now + ttl_offset)
       uuid = CreateActivity.create_activity(user_handle, message, expires_at)
-      model['data'] = {
-        'uuid': uuid.uuid4(),
-        'display_name': 'Andrew Brown',
-        'handle':  user_handle,
-        'message': message,
-        'created_at': now.isoformat(),
-        'expires_at': (now + ttl_offset).isoformat()
-      }
+      object_json = CreateActivity.query_object_activity(uuid)
+      model['data'] = object_json
     return model
   
   def create_activity(handle, message, expires_at):
     sql = db.template('create_activity')
 
-    print(sql)
+    app.logger.debug(sql)
 
     uuid = db.query_commit(sql, {'handle': handle, 'message': message, 'expires_at': expires_at})
 
     return uuid
+  
+  def query_object_activity(uuid):
+    sql = db.template('create_activity')
+
+    return db.query_object(sql, {'uuid': uuid})
