@@ -166,7 +166,6 @@ def data_search():
     return model['errors'], 422
   else:
     return model['data'], 200
-  return
 
 @app.route("/api/activities", methods=['POST','OPTIONS'])
 @cross_origin()
@@ -179,7 +178,6 @@ def data_activities():
     return model['errors'], 422
   else:
     return model['data'], 200
-  return
 
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
 def data_show_activity(activity_uuid):

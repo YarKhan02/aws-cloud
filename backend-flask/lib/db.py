@@ -14,8 +14,10 @@ class Db:
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
 
-  def template(self, name):
-    template_path = os.path.join(app.root_path, 'db', 'sql', name + '.sql')
+  def template(self, *args):
+    pathing = list((app.root_path, 'db', 'sql',) + args)
+    pathing[-1] = pathing[-1] + ".sql"
+    template_path = os.path.join(*pathing)
     with open(template_path, 'r') as f:
       template_content = f.read()
 
@@ -53,7 +55,12 @@ class Db:
         with conn.cursor() as cur:
           cur.execute(wrapped_sql, params)
           json = cur.fetchone()
-          return json[0]
+          app.logger.debug('-==================-\n')
+          app.logger.debug(json)
+          if json == None:
+            "{}"
+          else:
+            return json[0]
 
   def query_wrap_object(self, template):
       sql = f"""
@@ -83,9 +90,6 @@ class Db:
     # print the connect() error
     print ("\npsycopg2 ERROR:", err, "on line number:", line_num)
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
-
-    # psycopg2 extensions.Diagnostics object attribute
-    # print ("\nextensions.Diagnostics:", err.diag)
 
     # print the pgcode and pgerror exceptions
     print ("pgerror:", err.pgerror)
